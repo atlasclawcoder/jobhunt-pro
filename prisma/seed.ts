@@ -1,4 +1,6 @@
-import { db } from '../src/lib/db'
+import { PrismaClient } from '@prisma/client'
+
+const db = new PrismaClient()
 
 async function main() {
   console.log('Start seeding...')
@@ -80,8 +82,12 @@ Qualifications:
         data: jobData
       })
       console.log(`Created job: ${jobData.title} at ${jobData.company}`)
-    } catch (e) {
-      console.log(`Job already exists: ${jobData.title}`)
+    } catch (e: any) {
+      if (e.code === 'P2002') {
+        console.log(`Job already exists: ${jobData.title}`)
+      } else {
+        console.error(`Error creating job: ${e.message}`)
+      }
     }
   }
   
@@ -91,9 +97,9 @@ Qualifications:
     update: {},
     create: {
       id: 'user',
-      targetRoles: JSON.stringify(['Senior Software Engineer', 'Full Stack Developer', 'Frontend Engineer']),
-      keywords: JSON.stringify(['React', 'TypeScript', 'Node.js', 'Next.js']),
-      preferences: JSON.stringify({ rateLimit: 1 })
+      targetRoles: ['Senior Software Engineer', 'Full Stack Developer', 'Frontend Engineer'],
+      keywords: ['React', 'TypeScript', 'Node.js', 'Next.js'],
+      preferences: { rateLimit: 1 }
     }
   })
   

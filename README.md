@@ -163,7 +163,7 @@ jobhunt-next/
 
 - **Framework:** Next.js 15 (App Router)
 - **Language:** TypeScript
-- **Database:** PlanetScale (MySQL)
+- **Database:** Supabase (PostgreSQL)
 - **ORM:** Prisma
 - **File Storage:** Vercel Blob
 - **Styling:** Tailwind CSS

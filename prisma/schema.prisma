@@ -3,15 +3,16 @@ generator client {
 }
 
 datasource db {
-  provider = "mysql"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL") // For migrations
 }
 
 model Job {
   id            String   @id @default(cuid())
   title         String
   company       String
-  description   String?  @db.Text
+  description   String?
   url           String   @unique
   location      String?
   salaryRange   String?
@@ -32,7 +33,7 @@ model Application {
   status          String    @default("draft") // draft, submitted, responded, rejected, offer
   tailoredCvPath  String?
   coverLetterPath String?
-  notes           String?   @db.Text
+  notes           String?
   appliedAt       DateTime?
   createdAt       DateTime  @default(now())
 
@@ -43,9 +44,9 @@ model CVVersion {
   id          String   @id @default(cuid())
   name        String
   fileUrl     String
-  rawText     String?  @db.Text
-  skills      String?  @db.Text // JSON array
-  experience  String?  @db.Text // JSON array
+  rawText     String?
+  skills      Json?    // Changed to Json type for PostgreSQL
+  experience  Json?    // Changed to Json type for PostgreSQL
   isMaster    Boolean  @default(false)
   createdAt   DateTime @default(now())
 
@@ -58,9 +59,9 @@ model UserProfile {
   email        String?
   phone        String?
   linkedinUrl  String?
-  targetRoles  String?  @db.Text // JSON array
-  keywords     String?  @db.Text // JSON array
-  preferences  String?  @db.Text // JSON object
+  targetRoles  Json?    // Changed to Json type
+  keywords     Json?    // Changed to Json type
+  preferences  Json?    // Changed to Json type
 
   @@map("user_profile")
 }
