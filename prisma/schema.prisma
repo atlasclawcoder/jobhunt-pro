@@ -1,0 +1,66 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Job {
+  id            String   @id @default(cuid())
+  title         String
+  company       String
+  description   String?  @db.Text
+  url           String   @unique
+  location      String?
+  salaryRange   String?
+  status        String   @default("pending_review") // pending_review, approved, rejected, applied, expired
+  source        String
+  matchScore    Float?
+  discoveredAt  DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  applications  Application[]
+
+  @@map("jobs")
+}
+
+model Application {
+  id              String    @id @default(cuid())
+  jobId           String
+  job             Job       @relation(fields: [jobId], references: [id], onDelete: Cascade)
+  status          String    @default("draft") // draft, submitted, responded, rejected, offer
+  tailoredCvPath  String?
+  coverLetterPath String?
+  notes           String?   @db.Text
+  appliedAt       DateTime?
+  createdAt       DateTime  @default(now())
+
+  @@map("applications")
+}
+
+model CVVersion {
+  id          String   @id @default(cuid())
+  name        String
+  fileUrl     String
+  rawText     String?  @db.Text
+  skills      String?  @db.Text // JSON array
+  experience  String?  @db.Text // JSON array
+  isMaster    Boolean  @default(false)
+  createdAt   DateTime @default(now())
+
+  @@map("cv_versions")
+}
+
+model UserProfile {
+  id           String   @id @default("user")
+  name         String?
+  email        String?
+  phone        String?
+  linkedinUrl  String?
+  targetRoles  String?  @db.Text // JSON array
+  keywords     String?  @db.Text // JSON array
+  preferences  String?  @db.Text // JSON object
+
+  @@map("user_profile")
+}
