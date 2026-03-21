@@ -22,8 +22,8 @@ export async function POST(request: Request) {
       const profile = await db.userProfile.findUnique({
         where: { id: 'user' }
       })
-      if (profile?.keywords) {
-        searchKeywords = JSON.parse(profile.keywords)
+      if (profile?.keywords && Array.isArray(profile.keywords)) {
+        searchKeywords = profile.keywords as string[]
       } else {
         searchKeywords = DEFAULT_KEYWORDS
       }
@@ -235,7 +235,7 @@ export async function GET() {
     
     return NextResponse.json({
       defaultKeywords: DEFAULT_KEYWORDS,
-      userKeywords: profile?.keywords ? JSON.parse(profile.keywords) : null,
+      userKeywords: profile?.keywords && Array.isArray(profile.keywords) ? profile.keywords : null,
       supportedSources: ['linkedin', 'glassdoor', 'company'],
       exampleCompanyUrls: [
         'https://careers.google.com',
