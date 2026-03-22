@@ -18,8 +18,9 @@ export async function POST(
     
     return NextResponse.json({ success: true, job })
   } catch (error) {
+    console.error('Error rejecting job:', error)
     return NextResponse.json(
-      { error: 'Failed to reject job' },
+      { error: 'Failed to reject job', details: process.env.NODE_ENV === 'development' ? String(error) : undefined },
       { status: 500 }
     )
   }
