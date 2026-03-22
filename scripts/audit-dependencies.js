@@ -30,8 +30,8 @@ function findImports(dir) {
       while ((match = importRegex.exec(content)) !== null) {
         const importPath = match[1];
         
-        // Skip relative imports and Node.js built-ins
-        if (!importPath.startsWith('.') && !importPath.startsWith('node:')) {
+        // Skip relative imports, Node.js built-ins, and path aliases
+        if (!importPath.startsWith('.') && !importPath.startsWith('node:') && !importPath.startsWith('@/')) {
           // Extract package name (handle scoped packages)
           const packageName = importPath.startsWith('@') 
             ? importPath.split('/').slice(0, 2).join('/')
