@@ -10,11 +10,22 @@ export default function SearchPage() {
   const [loading, setLoading] = useState(false)
   const [results, setResults] = useState<any>(null)
 
-  const availableKeywords = [
+  const jobRoles = [
+    'product manager', 'event planner', 'project manager', 'data analyst',
+    'marketing manager', 'business analyst', 'ux designer', 'graphic designer',
+    'sales manager', 'operations manager', 'hr manager', 'financial analyst',
     'software engineer', 'developer', 'full stack', 'frontend', 'backend',
-    'react', 'vue', 'angular', 'typescript', 'javascript', 'node', 'python',
-    'aws', 'docker', 'kubernetes', 'devops', 'mobile', 'ios', 'android'
+    'devops engineer', 'qa engineer', 'mobile developer'
   ]
+
+  const technicalSkills = [
+    'react', 'vue', 'angular', 'typescript', 'javascript', 'node', 'python',
+    'java', 'c++', 'go', 'rust', 'sql', 'postgresql', 'mongodb',
+    'aws', 'azure', 'gcp', 'docker', 'kubernetes', 'ci/cd', 'git',
+    'rest api', 'graphql', 'microservices', 'agile', 'scrum'
+  ]
+
+  const availableKeywords = [...jobRoles, ...technicalSkills]
 
   const toggleKeyword = (keyword: string) => {
     if (keywords.includes(keyword)) {
@@ -69,21 +80,41 @@ export default function SearchPage() {
     <div className="max-w-4xl mx-auto space-y-8">
       <h1 className="text-2xl font-bold text-gray-900">Advanced Job Search</h1>
       
-      {/* Keywords */}
+      {/* Job Roles */}
       <div className="bg-white p-6 rounded-lg border shadow-sm">
-        <h2 className="text-lg font-semibold mb-4">Keywords</h2>
+        <h2 className="text-lg font-semibold mb-4">Job Roles</h2>
         <div className="flex flex-wrap gap-2">
-          {availableKeywords.map(keyword => (
+          {jobRoles.map(role => (
             <button
-              key={keyword}
-              onClick={() => toggleKeyword(keyword)}
+              key={role}
+              onClick={() => toggleKeyword(role)}
               className={`px-3 py-1 rounded-full text-sm transition-colors ${
-                keywords.includes(keyword)
+                keywords.includes(role)
+                  ? 'bg-green-500 text-white'
+                  : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+              }`}
+            >
+              {role}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {/* Technical Skills */}
+      <div className="bg-white p-6 rounded-lg border shadow-sm">
+        <h2 className="text-lg font-semibold mb-4">Technical Skills & Frameworks</h2>
+        <div className="flex flex-wrap gap-2">
+          {technicalSkills.map(skill => (
+            <button
+              key={skill}
+              onClick={() => toggleKeyword(skill)}
+              className={`px-3 py-1 rounded-full text-sm transition-colors ${
+                keywords.includes(skill)
                   ? 'bg-blue-500 text-white'
                   : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
               }`}
             >
-              {keyword}
+              {skill}
             </button>
           ))}
         </div>

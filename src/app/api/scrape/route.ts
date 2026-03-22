@@ -8,8 +8,17 @@ interface ScrapeRequest {
   companyUrls?: string[] // For custom company career pages
 }
 
-// Job title keywords to match
-const DEFAULT_KEYWORDS = ['software engineer', 'developer', 'full stack', 'frontend', 'backend', 'react', 'typescript']
+// Job title keywords to match - includes both job roles and technical skills
+const DEFAULT_KEYWORDS = [
+  // Job Roles
+  'software engineer', 'product manager', 'event planner', 'project manager',
+  'data analyst', 'marketing manager', 'business analyst', 'ux designer',
+  // Technical Roles
+  'developer', 'full stack', 'frontend', 'backend', 'devops engineer',
+  'qa engineer', 'mobile developer',
+  // Technical Skills
+  'react', 'typescript', 'node', 'python'
+]
 
 export async function POST(request: Request) {
   try {
